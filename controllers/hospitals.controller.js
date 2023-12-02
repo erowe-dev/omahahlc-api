@@ -21,8 +21,8 @@ const getHospital = async (req, res) => {
 }
 
 const createHospital = async (req, res) => {
-    let hosptial = await Hospital.create(req.body);
-    res.status(201).json(hosptial);
+    let hospital = await Hospital.create(req.body);
+    res.status(201).json(hospital);
 }
 
 const updateHospital = async (req, res) => {
