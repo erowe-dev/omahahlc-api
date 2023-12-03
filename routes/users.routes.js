@@ -1,7 +1,8 @@
-const express = require('express');
+const express = require("express");
+const usersController = require("../controllers/users.controller");
 const router = express.Router();
-const usersController = require('../controllers/users.controller')
 
-router.get('/permissions', usersController.getUserPermissions);
+router.get("/me", usersController.getUser);
+router.get("/my-menu", usersController.getUserMenu);
 
-module.exports = router
+module.exports = router;
