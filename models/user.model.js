@@ -3,24 +3,28 @@ const bcrypt = require("bcrypt");
 const opts = { toJSON: { virtuals: true } };
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
-  email: {
-    type: String,
-    required: true,
-    unique: true,
+const userSchema = new Schema(
+  {
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    fullname: {
+      type: String,
+    },
+    role: {
+      type: String,
+      enum: ["admin", "cooperativeDoctorCoordinator", "member", "helper"],
+      default: "member",
+    },
   },
-  password: {
-    type: String,
-    required: true,
-  },
-  fullname: {
-    type: String,
-  },
-  roles: {
-    type: Array,
-    default: ["member"],
-  },
-}, opts);
+  opts
+);
 
 userSchema.pre("save", async function (next) {
   const user = this;

@@ -6,9 +6,8 @@ const prospectiveDoctorSchema = new mongoose.Schema({
     firstname: String,
     lastname: String,
     specialty: String,
-    primaryFacilityId: String,
     phone: String,
-    isCooperative: Boolean
+    primaryFacilityId: String,
 }, opts);
 
 prospectiveDoctorSchema.virtual('id').get(function() {

@@ -11,6 +11,7 @@ const cooperativeDoctorsRouter = require("./routes/cooperative-doctors.routes");
 const prospectiveDoctorsRouter = require("./routes/prospective-doctors.routes");
 const hospitalsRouter = require("./routes/hospitals.routes");
 const usersRouter = require("./routes/users.routes");
+const userManagmentRouter = require("./routes/user-management.routes");
 
 const port = process.env.PORT || 3001;
 const dbConnectionString = process.env.MongoURI;
@@ -57,6 +58,11 @@ app.use(
   "/users",
   passport.authenticate("jwt", { session: false }),
   usersRouter
+);
+app.use(
+  "/user-management",
+  passport.authenticate("jwt", { session: false }),
+  userManagmentRouter
 );
 
 app.get("/", (req, res) => res.type("html").send(html));
