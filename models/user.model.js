@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-const opts = { toJSON: { virtuals: true } };
+const opts = { toJSON: { virtuals: true }, };
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema(

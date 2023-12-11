@@ -1,28 +1,39 @@
 const mongoose = require("mongoose");
-const opts = { toJSON: { virtuals: true } };
+const opts = { toJSON: { timestamps: true, virtuals: true } };
 
-const prospectiveDoctorSchema = new mongoose.Schema({
-    _id: mongoose.Schema.Types.ObjectId,
+const prospectiveDoctorSchema = new mongoose.Schema(
+  {
     firstname: String,
     lastname: String,
     specialty: String,
-    phone: String,
+    notes: String,
+    primaryPhone: String,
+    primaryEmail: String,
     primaryFacilityId: String,
-}, opts);
 
-prospectiveDoctorSchema.virtual('id').get(function() {
-    return this._id.toString();
-})
+    createdBy: String,
+    updatedBy: String,
+  },
+  opts
+);
 
-prospectiveDoctorSchema.virtual('fullname').get(function() {
-    return this.firstname + " " + this.lastname;
-})
-
-prospectiveDoctorSchema.virtual('primaryFacility', {
-    ref: 'Hospital',
-    localField: 'primaryFacilityId',
-    foreignField: '_id',
-    justOne: true
+prospectiveDoctorSchema.virtual("id").get(function () {
+  return this._id.toString();
 });
 
-module.exports = mongoose.model("ProspectiveDoctor", prospectiveDoctorSchema, "prospectiveDoctors");
+prospectiveDoctorSchema.virtual("fullname").get(function () {
+  return this.firstname + " " + this.lastname;
+});
+
+prospectiveDoctorSchema.virtual("primaryFacility", {
+  ref: "Hospital",
+  localField: "primaryFacilityId",
+  foreignField: "_id",
+  justOne: true,
+});
+
+module.exports = mongoose.model(
+  "ProspectiveDoctor",
+  prospectiveDoctorSchema,
+  "prospectiveDoctors"
+);

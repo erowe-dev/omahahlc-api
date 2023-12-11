@@ -1,5 +1,5 @@
 const decode = require("jwt-decode");
-const Users = require("../models/user.model");
+const User = require("../models/user.model");
 
 const getUser = async (req, res) => {
   let body = decode(req.headers.authorization);
@@ -8,7 +8,7 @@ const getUser = async (req, res) => {
 };
 
 const getUsers = async (req, res) => {
-  let users = await Users.find({});
+  let users = await User.find({});
 
   res.status(200).json(users);
 };

@@ -10,6 +10,7 @@ const authRouter = require("./routes/auth.routes");
 const cooperativeDoctorsRouter = require("./routes/cooperative-doctors.routes");
 const prospectiveDoctorsRouter = require("./routes/prospective-doctors.routes");
 const hospitalsRouter = require("./routes/hospitals.routes");
+const notesRouter = require("./routes/notes.routes");
 const usersRouter = require("./routes/users.routes");
 const userManagmentRouter = require("./routes/user-management.routes");
 
@@ -53,6 +54,11 @@ app.use(
   "/hospitals",
   passport.authenticate("jwt", { session: false }),
   hospitalsRouter
+);
+app.use(
+  "/notes",
+  passport.authenticate("jwt", { session: false }),
+  notesRouter
 );
 app.use(
   "/users",
