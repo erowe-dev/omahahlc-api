@@ -1,3 +1,4 @@
+const decode = require("jwt-decode");
 const Hospital = require("../models/hospital.model");
 
 const getHospitals = async (req, res) => {
@@ -21,7 +22,9 @@ const getHospital = async (req, res) => {
 };
 
 const createHospital = async (req, res) => {
-    console.log(req)
+  var token = decode(req.headers.authorization);
+  req.body.createdBy = token.user.name;
+
   let hospital = await Hospital.create(req.body);
 
   hospital.createdBy = req.user._id;
@@ -30,6 +33,9 @@ const createHospital = async (req, res) => {
 };
 
 const updateHospital = async (req, res) => {
+  var token = decode(req.headers.authorization);
+  req.body.updatedBy = token.user.name;
+
   let hospital = await Hospital.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
   });

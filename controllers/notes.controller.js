@@ -1,3 +1,4 @@
+const decode = require("jwt-decode");
 const Note = require("../models/hospital.model");
 
 const getNotes = async (req, res) => {
@@ -19,8 +20,12 @@ const getNotes = async (req, res) => {
 };
 
 const createNote = async (req, res) => {
+  var token = decode(req.headers.authorization);
+  req.body.createdBy = token.user.name;
+
   let note = new Note(req.body);
   await note.save();
+
   res.status(201).json(note.id);
 };
 

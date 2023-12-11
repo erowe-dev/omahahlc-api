@@ -1,3 +1,4 @@
+const decode = require("jwt-decode");
 const ProspectiveDoctor = require("../models/prospective-doctor.model");
 
 const getProspectiveDoctors = async (req, res) => {
@@ -23,11 +24,17 @@ const getProspectiveDoctor = async (req, res) => {
 };
 
 const createProspectiveDoctor = async (req, res) => {
+  var token = decode(req.headers.authorization);
+  req.body.createdBy = token.user.name;
+
   let doctor = await ProspectiveDoctor.create(req.body);
   res.status(201).json(doctor);
 };
 
 const updateProspectiveDoctor = async (req, res) => {
+  var token = decode(req.headers.authorization);
+  req.body.updatedBy = token.user.name;
+
   let doctor = await ProspectiveDoctor.findByIdAndUpdate(
     req.params.id,
     req.body,

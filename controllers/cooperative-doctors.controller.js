@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const decode = require("jwt-decode");
 const CooperativeDoctor = require("../models/cooperative-doctor.model");
 
 const getCooperativeDoctors = async (req, res) => {
@@ -24,11 +24,9 @@ const getCooperativeDoctor = async (req, res) => {
 };
 
 const createCooperativeDoctor = async (req, res) => {
-  req.body._id = new mongoose.Types.ObjectId();
-  req.body.firstname = req.body.fullname.split(" ")[0];
-  req.body.lastname = req.body.fullname.split(" ")[1]
-    ? req.body.fullname.split(" ")[1]
-    : "";
+  var token = decode(req.headers.authorization);
+  req.body.createdBy = token.user.name;
+
   req.body.primaryPhone
     ? req.body.phoneNumbers.push(req.body.primaryPhone)
     : null;
@@ -37,18 +35,17 @@ const createCooperativeDoctor = async (req, res) => {
 };
 
 const updateCooperativeDoctor = async (req, res) => {
-  req.body.firstname = req.body.fullname.split(" ")[0];
-  req.body.lastname = req.body.fullname.split(" ")[1]
-    ? req.body.fullname.split(" ")[1]
-    : "";
+  var token = decode(req.headers.authorization);
+  req.body.updatedBy = token.user.name;
+
   req.body.primaryPhone
     ? (req.body.phoneNumbers = [req.body.primaryPhone])
     : (req.body.phoneNumbers = []);
   req.body.secondaryPhones
     ? req.body.phoneNumbers.push(req.body.secondaryPhones)
     : null;
-  let doctor = await CooperativeDoctor.findByIdAndUpdate(
-    req.params.id,
+  let doctor = await CooperativeDoctor.findOneAndUpdate(
+    { _id: req.params.id },
     req.body,
     { new: true }
   );
