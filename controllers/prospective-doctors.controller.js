@@ -44,8 +44,8 @@ const updateProspectiveDoctor = async (req, res) => {
 };
 
 const deleteProspectiveDoctor = async (req, res) => {
-  let doctor = await ProspectiveDoctor.findByIdAndDelete(req.params.id);
-  res.status(200).json(doctor);
+  await ProspectiveDoctor.findByIdAndDelete(req.params.id);
+  res.status(200).json({ message: "Prospective doctor deleted successfully" });
 };
 
 module.exports = {

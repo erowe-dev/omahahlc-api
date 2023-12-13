@@ -53,8 +53,8 @@ const updateCooperativeDoctor = async (req, res) => {
 };
 
 const deleteCooperativeDoctor = async (req, res) => {
-  let doctor = await CooperativeDoctor.findByIdAndDelete(req.params.id);
-  res.status(200).json(doctor);
+  await CooperativeDoctor.findByIdAndDelete(req.params.id);
+  res.status(200).json({ message: "Cooperative doctor deleted successfully" });
 };
 
 module.exports = {

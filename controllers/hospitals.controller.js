@@ -45,9 +45,15 @@ const updateHospital = async (req, res) => {
   res.status(200).json(hospital);
 };
 
+const deleteHospital = async (req, res) => {
+  await CooperativeDoctor.findByIdAndDelete(req.params.id);
+  res.status(200).json({ message: "Hospital deleted successfully" });
+};
+
 module.exports = {
   getHospitals,
   getHospital,
   createHospital,
   updateHospital,
+  deleteHospital,
 };
