@@ -1,4 +1,5 @@
 const decode = require("jwt-decode");
+const User = require("../models/user.model");
 
 const getUser = async (req, res) => {
   let body = decode(req.headers.authorization);
@@ -6,14 +7,17 @@ const getUser = async (req, res) => {
   res.status(200).json(body.user);
 };
 
+const getUsers = async (req, res) => {
+  let users = await User.find({}, "-password");
+
+  res.status(200).json(users);
+};
+
 const getUserMenu = async (req, res) => {
-  let roles = decode(req.headers.authorization).user.roles;
+  let role = decode(req.headers.authorization).user.role;
   let menuItems = [];
 
-  if (
-    roles.includes("admin") ||
-    roles.includes("cooperativeDoctorCoordinator")
-  ) {
+  if (role === "admin" || role === "cooperativeDoctorCoordinator") {
     menuItems = [
       {
         id: "home",
@@ -50,8 +54,15 @@ const getUserMenu = async (req, res) => {
         icon: "heroicons_outline:calendar",
         link: "my-appointments",
       },
+      {
+        id: "user-management",
+        title: "User Management",
+        type: "basic",
+        icon: "mat_outline:manage_accounts",
+        link: "user-management",
+      },
     ];
-  } else if (roles.includes("member")) {
+  } else if (role === "member") {
     menuItems = [
       {
         id: "home",
@@ -111,7 +122,15 @@ const getUserMenu = async (req, res) => {
   res.status(200).json({ default: menuItems });
 };
 
+const updatePassword = async (req, res) => {
+  let body = decode(req.headers.authorization);
+
+  res.status(200).json(body.user);
+};
+
 module.exports = {
   getUser,
+  getUsers,
   getUserMenu,
+  updatePassword,
 };

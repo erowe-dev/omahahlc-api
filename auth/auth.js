@@ -30,10 +30,12 @@ passport.use(
     },
     async (email, password, done) => {
       try {
+        email = email.toLowerCase();
         const user = await UserModel.create({ email, password });
 
         return done(null, user);
       } catch (error) {
+        console.log(error);
         done(error);
       }
     }
@@ -49,8 +51,9 @@ passport.use(
     },
     async (email, password, done) => {
       try {
+        email = email.toLowerCase();
         const user = await UserModel.findOne({ email });
-        
+
         if (!user) {
           return done(null, false, { message: "User not found" });
         }

@@ -1,35 +1,40 @@
 const mongoose = require("mongoose");
-const opts = { toJSON: { virtuals: true } };
+const opts = { toJSON: { timestamps: true, virtuals: true } };
 
-const cooperativeDoctorSchema = new mongoose.Schema({
-    _id: mongoose.Schema.Types.ObjectId,
+const cooperativeDoctorSchema = new mongoose.Schema(
+  {
     firstname: String,
     lastname: String,
     consulting: Boolean,
     notes: String,
     specialty: String,
+    primaryPhone: String,
+    primaryEmail: String,
     primaryFacilityId: String,
-    phoneNumbers: Array,
-    otherFacilites: Array
-}, opts);
 
-cooperativeDoctorSchema.virtual('id').get(function() {
-    return this._id.toString();
-})
+    createdBy: String,
+    updatedBy: String,
+  },
+  opts
+);
 
-cooperativeDoctorSchema.virtual('fullname').get(function() {
-    return this.firstname + " " + this.lastname;
-})
-
-cooperativeDoctorSchema.virtual('primaryPhone').get(function() {
-    return this.phoneNumbers[0];
-})
-
-cooperativeDoctorSchema.virtual('primaryFacility', {
-    ref: 'Hospital',
-    localField: 'primaryFacilityId',
-    foreignField: '_id',
-    justOne: true
+cooperativeDoctorSchema.virtual("id").get(function () {
+  return this._id.toString();
 });
 
-module.exports = mongoose.model("CooperativeDoctor", cooperativeDoctorSchema, "cooperativeDoctors");
+cooperativeDoctorSchema.virtual("fullname").get(function () {
+  return this.firstname + " " + this.lastname;
+});
+
+cooperativeDoctorSchema.virtual("primaryFacility", {
+  ref: "Hospital",
+  localField: "primaryFacilityId",
+  foreignField: "_id",
+  justOne: true,
+});
+
+module.exports = mongoose.model(
+  "CooperativeDoctor",
+  cooperativeDoctorSchema,
+  "cooperativeDoctors"
+);
