@@ -8,7 +8,7 @@ const getUser = async (req, res) => {
 };
 
 const getUsers = async (req, res) => {
-  let users = await User.find({});
+  let users = await User.find({}, "-password");
 
   res.status(200).json(users);
 };
@@ -17,9 +17,7 @@ const getUserMenu = async (req, res) => {
   let role = decode(req.headers.authorization).user.role;
   let menuItems = [];
 
-  if (
-    role === "admin" ||
-    role === "cooperativeDoctorCoordinator") {
+  if (role === "admin" || role === "cooperativeDoctorCoordinator") {
     menuItems = [
       {
         id: "home",

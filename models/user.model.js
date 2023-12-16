@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-const opts = { toJSON: { virtuals: true }, };
+const opts = { toJSON: { virtuals: true } };
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
@@ -12,9 +12,8 @@ const userSchema = new Schema(
     },
     password: {
       type: String,
-      required: true,
     },
-    fullname: {
+    name: {
       type: String,
     },
     role: {
@@ -22,12 +21,19 @@ const userSchema = new Schema(
       enum: ["admin", "cooperativeDoctorCoordinator", "member", "helper"],
       default: "member",
     },
+    phone: {
+      type: String,
+    },
   },
   opts
 );
 
 userSchema.pre("save", async function (next) {
   const user = this;
+  if (!user.password) {
+    return next();
+  }
+
   const hash = await bcrypt.hash(this.password, 10);
 
   this.password = hash;
