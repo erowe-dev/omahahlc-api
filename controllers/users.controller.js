@@ -122,15 +122,8 @@ const getUserMenu = async (req, res) => {
   res.status(200).json({ default: menuItems });
 };
 
-const updatePassword = async (req, res) => {
-  let body = decode(req.headers.authorization);
-
-  res.status(200).json(body.user);
-};
-
 module.exports = {
   getUser,
   getUsers,
   getUserMenu,
-  updatePassword,
 };

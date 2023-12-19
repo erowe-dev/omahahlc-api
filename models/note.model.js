@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const opts = { toJSON: { timestamps: true, virtuals: true } };
+const opts = { toJSON: { virtuals: true }, timestamps: true };
 
 const noteSchema = new mongoose.Schema(
   {
@@ -14,7 +14,7 @@ const noteSchema = new mongoose.Schema(
     },
     contactMethod: {
       type: String,
-      enum: ["phone", "email", "text", "in-person"],
+      enum: ["phone", "email", "text", "in-person", "none"],
       default: "phone",
     },
 
@@ -28,4 +28,4 @@ noteSchema.virtual("id").get(function () {
   return this._id.toString();
 });
 
-module.exports = mongoose.model("Notes", noteSchema, "noteSchema");
+module.exports = mongoose.model("Notes", noteSchema, "notes");

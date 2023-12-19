@@ -5,6 +5,5 @@ const router = express.Router();
 router.get("/me", usersController.getUser);
 router.get("/", usersController.getUsers);
 router.get("/my-menu", usersController.getUserMenu);
-router.put("/change-password", usersController.getUserMenu);
 
 module.exports = router;
