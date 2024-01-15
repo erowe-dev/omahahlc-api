@@ -23,6 +23,20 @@ const getCooperativeDoctor = async (req, res) => {
   }
 };
 
+const getNewCooperativeDoctors = async (req, res) => {
+  try {
+    const newCoopDoctors = await CooperativeDoctor.find()
+      .sort({ createdAt: -1 })
+      .populate("primaryFacility")
+      .limit(5);
+      
+
+    res.status(200).json(newCoopDoctors);
+  } catch (error) {
+    res.status(400).json();
+  }
+};
+
 const createCooperativeDoctor = async (req, res) => {
   var token = decode(req.headers.authorization);
   req.body.createdBy = token.user.name;
@@ -60,6 +74,7 @@ const deleteCooperativeDoctor = async (req, res) => {
 module.exports = {
   getCooperativeDoctors,
   getCooperativeDoctor,
+  getNewCooperativeDoctors,
   createCooperativeDoctor,
   updateCooperativeDoctor,
   deleteCooperativeDoctor,

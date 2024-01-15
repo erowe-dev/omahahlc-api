@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const opts = { toJSON: { timestamps: true, virtuals: true } };
+const opts = { toJSON: { virtuals: true }, timestamps: true };
 
 const prospectiveDoctorSchema = new mongoose.Schema(
   {
