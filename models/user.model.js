@@ -51,6 +51,6 @@ userSchema.virtual("id").get(function () {
   return this._id.toString();
 });
 
-const UserModel = mongoose.model("user", userSchema);
+const UserModel = mongoose.model("User", userSchema, "users");
 
 module.exports = UserModel;

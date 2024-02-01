@@ -1,5 +1,7 @@
 const decode = require("jwt-decode");
+const CooperativeDoctor = require("../models/cooperative-doctor.model");
 const ProspectiveDoctor = require("../models/prospective-doctor.model");
+const Note = require("../models/note.model");
 
 const getProspectiveDoctors = async (req, res) => {
   let doctors = await ProspectiveDoctor.find().populate("primaryFacility");
@@ -48,10 +50,48 @@ const deleteProspectiveDoctor = async (req, res) => {
   res.status(200).json({ message: "Prospective doctor deleted successfully" });
 };
 
+/* 
+  Custom Functions
+*/
+
+const moveToCooperativeDoctors = async (req, res) => {
+  let prospectiveDoctor = await ProspectiveDoctor.findById(req.params.id);
+
+  if (!prospectiveDoctor) {
+    res.status(400).json();
+  } else {
+    let newCooperativeDoctor = new CooperativeDoctor({
+      firstname: prospectiveDoctor.firstname,
+      lastname: prospectiveDoctor.lastname,
+      specialty: prospectiveDoctor.specialty,
+      primaryPhone: prospectiveDoctor.primaryPhone,
+      primaryEmail: prospectiveDoctor.primaryEmail,
+      primaryFacilityId: prospectiveDoctor.primaryFacilityId,
+
+      createdBy: prospectiveDoctor.createdBy,
+      updatedBy: prospectiveDoctor.updatedBy,
+    });
+
+    await newCooperativeDoctor.save();
+
+    await updateNotes(req.params.id, newCooperativeDoctor._id.toString());
+
+    res.status(201).json(newCooperativeDoctor.id);
+  }
+};
+
+async function updateNotes(prospectiveDoctorId, cooperativeDoctorId) {
+  await Note.updateMany(
+    { prospectiveDoctorId: prospectiveDoctorId },
+    { prospectiveDoctorId: null, cooperativeDoctorId: cooperativeDoctorId }
+  );
+}
+
 module.exports = {
   getProspectiveDoctors,
   getProspectiveDoctor,
   createProspectiveDoctor,
   updateProspectiveDoctor,
   deleteProspectiveDoctor,
+  moveToCooperativeDoctors,
 };

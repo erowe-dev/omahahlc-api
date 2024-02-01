@@ -28,4 +28,4 @@ noteSchema.virtual("id").get(function () {
   return this._id.toString();
 });
 
-module.exports = mongoose.model("Notes", noteSchema, "notes");
+module.exports = mongoose.model("Note", noteSchema, "notes");

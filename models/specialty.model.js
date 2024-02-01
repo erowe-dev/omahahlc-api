@@ -10,4 +10,4 @@ specialtySchema.virtual("id").get(function () {
   return this._id.toString();
 });
 
-module.exports = mongoose.model("Specialties", specialtySchema, "specialties");
+module.exports = mongoose.model("Specialty", specialtySchema, "specialties");

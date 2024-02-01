@@ -69,8 +69,14 @@ const createNote = async (req, res) => {
     });
 };
 
+const deleteNote = async (req, res) => {
+  await Note.findByIdAndDelete(req.params.id);
+  res.status(200).json({ message: "Note deleted successfully" });
+};
+
 module.exports = {
   getNotes,
   getStatistics: getInteractionStatistics,
   createNote,
+  deleteNote,
 };

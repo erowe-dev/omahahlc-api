@@ -3,8 +3,9 @@ const User = require("../models/user.model");
 
 const getUser = async (req, res) => {
   let body = decode(req.headers.authorization);
+  let user = await User.findOne({ _id: body.user._id }, "-password");
 
-  res.status(200).json(body.user);
+  res.status(200).json(user);
 };
 
 const getUsers = async (req, res) => {

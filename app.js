@@ -11,6 +11,7 @@ const cooperativeDoctorsRouter = require("./routes/cooperative-doctors.routes");
 const prospectiveDoctorsRouter = require("./routes/prospective-doctors.routes");
 const hospitalsRouter = require("./routes/hospitals.routes");
 const notesRouter = require("./routes/notes.routes");
+const presentationsRouter = require("./routes/presentations.routes");
 const specialtiesRouter = require("./routes/specialties.routes");
 const usersRouter = require("./routes/users.routes");
 const userManagmentRouter = require("./routes/user-management.routes");
@@ -60,6 +61,11 @@ app.use(
   "/notes",
   passport.authenticate("jwt", { session: false }),
   notesRouter
+);
+app.use(
+  "/presentations",
+  passport.authenticate("jwt", { session: false }),
+  presentationsRouter
 );
 app.use(
   "/specialties",

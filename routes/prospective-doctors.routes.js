@@ -7,5 +7,9 @@ router.get("/:id", prospectiveDoctorsContoller.getProspectiveDoctor);
 router.post("/", prospectiveDoctorsContoller.createProspectiveDoctor);
 router.put("/:id", prospectiveDoctorsContoller.updateProspectiveDoctor);
 router.delete("/:id", prospectiveDoctorsContoller.deleteProspectiveDoctor);
+router.put(
+  "/:id/move-to-cooperative-doctors",
+  prospectiveDoctorsContoller.moveToCooperativeDoctors
+);
 
 module.exports = router;
