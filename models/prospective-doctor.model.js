@@ -5,7 +5,8 @@ const prospectiveDoctorSchema = new mongoose.Schema(
   {
     firstname: String,
     lastname: String,
-    specialty: String,
+    primarySpecialty: String,
+    otherSpecialties: String,
     notes: String,
     primaryPhone: String,
     primaryEmail: String,

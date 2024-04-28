@@ -9,7 +9,9 @@ const getPresentations = async (req, res) => {
   if (userId !== undefined) {
     let presentations = await Presentation.find({
       assignedMembers: userId,
-    }).populate("assignedMembers");
+    })
+      .populate("assignedMembers")
+      .populate("prospectiveDoctor");
     res.status(200).json(presentations);
   } else if (prospectiveDoctorId !== undefined) {
     let presentations = await Presentation.find({

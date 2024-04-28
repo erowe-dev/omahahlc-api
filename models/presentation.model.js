@@ -24,6 +24,13 @@ presentationSchema.virtual("id").get(function () {
   return this._id.toString();
 });
 
+presentationSchema.virtual("prospectiveDoctor", {
+  ref: "ProspectiveDoctor",
+  localField: "prospectiveDoctorId",
+  foreignField: "_id",
+  justOne: true,
+});
+
 module.exports = mongoose.model(
   "Presentation",
   presentationSchema,
