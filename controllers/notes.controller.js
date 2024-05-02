@@ -21,14 +21,7 @@ const getNotes = async (req, res) => {
 
 const getInteractionStatistics = async (req, res) => {
   let prospectiveNotes = await Note.find({
-    prospectiveDoctorId: { $ne: null },
     noteType: { $ne: "note" },
-  }).then((notes) => {
-    let month = new Date().getMonth();
-    let notesThisMonth = notes.filter(
-      (note) => new Date(note.createdAt).getMonth() === month
-    );
-    return notesThisMonth;
   });
 
   let contactMethods = {

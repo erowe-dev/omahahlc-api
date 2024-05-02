@@ -1,14 +1,20 @@
 const mongoose = require("mongoose");
-const opts = { toJSON: { timestamps: true, virtuals: true } };
+const opts = { toJSON: { virtuals: true }, timestamps: true };
 
-const hospitalSchema = new mongoose.Schema({
+const hospitalSchema = new mongoose.Schema(
+  {
     hospitalName: String,
     healthCareSystem: String,
     cms: String,
     hospitalType: {
-        type: String,
-        enum: ["Acute Care Hospital", "Childrens", "Critical Access Hospital", "General"],
-        default: "General",
+      type: String,
+      enum: [
+        "Acute Care Hospital",
+        "Childrens",
+        "Critical Access Hospital",
+        "General",
+      ],
+      default: "General",
     },
     emergencyServices: Boolean,
     traumaCenter: Boolean,
@@ -21,10 +27,12 @@ const hospitalSchema = new mongoose.Schema({
 
     createdBy: String,
     updatedBy: String,
-}, opts);
+  },
+  opts
+);
 
-hospitalSchema.virtual('id').get(function() {
-    return this._id.toString();
-})
+hospitalSchema.virtual("id").get(function () {
+  return this._id.toString();
+});
 
 module.exports = mongoose.model("Hospital", hospitalSchema, "hospitals");
