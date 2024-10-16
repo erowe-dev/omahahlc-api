@@ -87,6 +87,16 @@ const getUserMenu = async (req, res) => {
         link: "my-appointments",
       },
     ];
+  } else if (role === "pvg") {
+    menuItems = [
+      {
+        id: "hospitals",
+        title: "Hospitals",
+        type: "basic",
+        icon: "heroicons_outline:office-building",
+        link: "hospitals",
+      },
+    ];
   } else {
     menuItems = [
       {

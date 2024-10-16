@@ -12,7 +12,9 @@ const getHospitals = async (req, res) => {
 };
 
 const getHospital = async (req, res) => {
-  let hospital = await Hospital.findById(req.params.id);
+  let hospital = await Hospital.findById(req.params.id)
+    .populate("assignedHlcMembers")
+    .populate("assignedPvgMembers");
 
   if (hospital) {
     res.status(200).json(hospital);
@@ -38,7 +40,9 @@ const updateHospital = async (req, res) => {
 
   let hospital = await Hospital.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
-  });
+  })
+    .populate("assignedHlcMembers")
+    .populate("assignedPvgMembers");
 
   hospital.updatedBy = req.user._id;
 
