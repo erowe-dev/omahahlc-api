@@ -18,7 +18,7 @@ const getUserMenu = async (req, res) => {
   let role = decode(req.headers.authorization).user.role;
   let menuItems = [];
 
-  if (role === "admin" || role === "cooperativeDoctorCoordinator") {
+  if (role.toLowerCase().includes("admin") || role === "cooperativeDoctorCoordinator") {
     menuItems = [
       {
         id: "home",
@@ -49,13 +49,6 @@ const getUserMenu = async (req, res) => {
         link: "hospitals",
       },
       {
-        id: "appointments",
-        title: "My Appointments",
-        type: "basic",
-        icon: "heroicons_outline:calendar",
-        link: "my-appointments",
-      },
-      {
         id: "user-management",
         title: "User Management",
         type: "basic",
@@ -79,12 +72,15 @@ const getUserMenu = async (req, res) => {
         icon: "mat_outline:medical_services",
         link: "cooperative-doctors",
       },
+    ];
+  } else if (role === "pvg") {
+    menuItems = [
       {
-        id: "appointments",
-        title: "My Appointments",
+        id: "hospitals",
+        title: "Hospitals",
         type: "basic",
-        icon: "heroicons_outline:calendar",
-        link: "my-appointments",
+        icon: "heroicons_outline:office-building",
+        link: "hospitals",
       },
     ];
   } else {

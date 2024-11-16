@@ -25,6 +25,19 @@ const hospitalSchema = new mongoose.Schema(
     zip: String,
     telephone: String,
 
+    assignedHlcMembers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    assignedPvgMembers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+
     createdBy: String,
     updatedBy: String,
   },
