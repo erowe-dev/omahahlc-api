@@ -1,54 +1,75 @@
 const decode = require("jwt-decode");
-const Presentation = require("../models/presentation.model");
+const CompletedPresentation = require("../models/completed-presentation.model");
+const PresentationContact = require("../models/presentation-contact.model");
+const PresentationInvitation = require("../models/presentation-invitation.model");
+const ScheduledPresentation = require("../models/scheduled-presentation.model");
 
-const getPresentations = async (req, res) => {
-  let userId = req.query.userId;
-  let prospectiveDoctorId = req.query.prospectiveDoctorId;
-  let hospitalId = req.query.hospitalId;
+const getPresentationContacts = async (req, res) => {
+  let presentationContacts = await PresentationContact.find().populate(
+    "facility"
+  );
 
-  if (userId !== undefined) {
-    let presentations = await Presentation.find({
-      assignedMembers: userId,
-    })
-      .populate("assignedMembers")
-      .populate("prospectiveDoctor");
-    res.status(200).json(presentations);
-  } else if (prospectiveDoctorId !== undefined) {
-    let presentations = await Presentation.find({
-      prospectiveDoctorId: prospectiveDoctorId,
-    }).populate("assignedMembers");
-    res.status(200).json(presentations);
-  } else if (hospitalId !== undefined) {
-    let presentations = await Presentation.find({
-      hospitalId: hospitalId,
-    }).populate("assignedMembers");
-    res.status(200).json(presentations);
-  }
+  res.status(200).json(presentationContacts);
 };
 
-const createPresentation = async (req, res) => {
-  var token = decode(req.headers.authorization);
+const getPresentationContact = async (req, res) => {
+  let presentationContact = await PresentationContact.findById(
+    req.params.id
+  ).populate("facility");
 
-  let presentation = new Presentation(req.body);
-  presentation.createdBy = token.user.name;
-
-  await presentation
-    .save()
-    .then((presentation) => {
-      res.status(201).json(presentation);
-    })
-    .catch((err) => {
-      res.status(500).json(err);
-    });
+  res.status(200).json(presentationContact);
 };
 
-const deletePresentation = async (req, res) => {
-  await Presentation.findByIdAndDelete(req.params.id);
-  res.status(200).json({ message: "Presentation deleted successfully" });
+const getPresentationInvitations = async (req, res) => {
+  let query = req.query.contactId ? { contactId: req.query.contactId } : {};
+  let presentationInvitations = await PresentationInvitation.find(query);
+
+  res.status(200).json(presentationInvitations);
+};
+
+const getScheduledPresentations = async (req, res) => {
+  let scheduledPresentations = await ScheduledPresentation.find();
+
+  res.status(200).json(scheduledPresentations);
+};
+
+const getCompletedPresentations = async (req, res) => {
+  let completedPresentations = await CompletedPresentation.find();
+
+  res.status(200).json(completedPresentations);
+};
+
+const createPresentationInvitation = async (req, res) => {
+  let presentationInvitation = new PresentationInvitation(req.body);
+
+  await presentationInvitation.save();
+
+  res.status(201).json(presentationInvitation);
+};
+
+const createScheduledPresentation = async (req, res) => {
+  let scheduledPresentation = new ScheduledPresentation(req.body);
+
+  await scheduledPresentation.save();
+
+  res.status(201).json(scheduledPresentation);
+};
+
+const createCompletedPresentation = async (req, res) => {
+  let completedPresentation = new CompletedPresentation(req.body);
+
+  await completedPresentation.save();
+
+  res.status(201).json(completedPresentation);
 };
 
 module.exports = {
-  getPresentations,
-  createPresentation,
-  deletePresentation,
+  createCompletedPresentation,
+  createPresentationInvitation,
+  createScheduledPresentation,
+  getCompletedPresentations,
+  getPresentationContact,
+  getPresentationContacts,
+  getPresentationInvitations,
+  getScheduledPresentations,
 };
