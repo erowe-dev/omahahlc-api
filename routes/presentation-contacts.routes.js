@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.get("/", presentationsController.getPresentationContacts);
 router.get("/:id", presentationsController.getPresentationContact);
-// router.post("/", presentationsController.createPresentationContact);
+router.post("/", presentationsController.createPresentationContact);
 // router.delete("/:id", presentationsController.deletePresentation);
 
 module.exports = router;

@@ -7,6 +7,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 const authRouter = require("./routes/auth.routes");
+const checklistsRouter = require("./routes/checklists.routes");
 const completedPresentationsRouter = require("./routes/completed-presentations.routes");
 const cooperativeDoctorsRouter = require("./routes/cooperative-doctors.routes");
 const hospitalsRouter = require("./routes/hospitals.routes");
@@ -16,6 +17,7 @@ const presentationInvitationsRouter = require("./routes/presentation-invitations
 const prospectiveDoctorsRouter = require("./routes/prospective-doctors.routes");
 const scheduledPresentationsRouter = require("./routes/scheduled-presentations.routes");
 const specialtiesRouter = require("./routes/specialties.routes");
+const tasksRouter = require("./routes/tasks.routes");
 const userManagmentRouter = require("./routes/user-management.routes");
 const usersRouter = require("./routes/users.routes");
 
@@ -49,6 +51,11 @@ app.use(
   "/scheduled-presentations",
   passport.authenticate("jwt", { session: false }),
   scheduledPresentationsRouter
+);
+app.use(
+  "/checklists",
+  passport.authenticate("jwt", { session: false }),
+  checklistsRouter
 );
 app.use(
   "/completed-presentations",
@@ -89,6 +96,11 @@ app.use(
   "/specialties",
   passport.authenticate("jwt", { session: false }),
   specialtiesRouter
+);
+app.use(
+  "/tasks",
+  passport.authenticate("jwt", { session: false }),
+  tasksRouter
 );
 app.use(
   "/users",

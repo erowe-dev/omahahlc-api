@@ -5,7 +5,6 @@ const completedPresentationSchema = new mongoose.Schema(
   {
     contactId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "PresentationContact",
     },
     completeDate: Date,
     presenters: [
@@ -42,6 +41,13 @@ const completedPresentationSchema = new mongoose.Schema(
 
 completedPresentationSchema.virtual("id").get(function () {
   return this._id.toString();
+});
+
+completedPresentationSchema.virtual("contact", {
+  ref: "PresentationContact",
+  localField: "contactId",
+  foreignField: "_id",
+  justOne: true,
 });
 
 module.exports = mongoose.model(

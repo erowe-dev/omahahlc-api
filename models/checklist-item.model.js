@@ -3,12 +3,11 @@ const opts = { toJSON: { virtuals: true }, timestamps: true };
 
 const checklistItemSchema = new mongoose.Schema(
   {
-    key: String,
-    value: Boolean,
+    description: String,
     type: {
       type: String,
       enum: ["scheduledPresentation", "other"],
-      default: "other",
+      default: "scheduledPresentation",
     },
   },
   opts

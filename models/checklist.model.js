@@ -3,10 +3,13 @@ const opts = { toJSON: { virtuals: true }, timestamps: true };
 
 const checklistSchema = new mongoose.Schema(
   {
-    checklistItems: [
+    items: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "ChecklistItem",
+        description: String,
+        completed: {
+          type: Boolean,
+          default: false,
+        },
       },
     ],
     createdBy: String,

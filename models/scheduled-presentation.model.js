@@ -5,8 +5,8 @@ const scheduledPresentationSchema = new mongoose.Schema(
   {
     contactId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "PresentationContact",
     },
+
     scheduledDateTime: Date,
     assignedPresenters: [
       {
@@ -23,6 +23,7 @@ const scheduledPresentationSchema = new mongoose.Schema(
       type: Date,
       default: Date.now() + 7,
     },
+    notes: String,
 
     presentationChecklist: {
       type: mongoose.Schema.Types.ObjectId,
@@ -37,6 +38,13 @@ const scheduledPresentationSchema = new mongoose.Schema(
 
 scheduledPresentationSchema.virtual("id").get(function () {
   return this._id.toString();
+});
+
+scheduledPresentationSchema.virtual("contact", {
+  ref: "PresentationContact",
+  localField: "contactId",
+  foreignField: "_id",
+  justOne: true,
 });
 
 module.exports = mongoose.model(
