@@ -30,6 +30,11 @@ const scheduledPresentationSchema = new mongoose.Schema(
       ref: "Checklist",
     },
 
+    completed: {
+      type: Boolean,
+      default: false,
+    },
+
     createdBy: String,
     updatedBy: String,
   },

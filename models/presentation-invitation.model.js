@@ -41,6 +41,11 @@ const presentationInvitationSchema = new mongoose.Schema(
       default: "pending",
     },
 
+    scheduled: {
+      type: Boolean,
+      default: false,
+    },
+
     createdBy: String,
     updatedBy: String,
   },

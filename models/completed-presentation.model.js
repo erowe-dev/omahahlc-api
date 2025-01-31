@@ -6,7 +6,7 @@ const completedPresentationSchema = new mongoose.Schema(
     contactId: {
       type: mongoose.Schema.Types.ObjectId,
     },
-    completeDate: Date,
+    completedDate: Date,
     presenters: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -19,6 +19,10 @@ const completedPresentationSchema = new mongoose.Schema(
       },
     ],
     offeredCME: {
+      type: Boolean,
+      default: false,
+    },
+    addedCMEToExcelTracker: {
       type: Boolean,
       default: false,
     },

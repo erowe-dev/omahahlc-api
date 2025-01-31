@@ -52,7 +52,18 @@ const getScheduledPresentations = async (req, res) => {
 };
 
 const getCompletedPresentations = async (req, res) => {
-  let completedPresentations = await CompletedPresentation.find();
+  let query = {};
+  if (req.query.contactId) {
+    query.contactId = req.query.contactId;
+  }
+  if (req.query.userId) {
+    query = {
+      assignedPresenters: { $in: [req.query.userId] },
+    };
+  }
+  let completedPresentations = await CompletedPresentation.find(query).populate(
+    "presenters"
+  );
 
   res.status(200).json(completedPresentations);
 };
@@ -73,9 +84,16 @@ const createPresentationInvitation = async (req, res) => {
   res.status(201).json(presentationInvitation);
 };
 
+const updatePresentationInvitation = async (req, res) => {
+  await PresentationInvitation.findByIdAndUpdate(req.params.id, req.body);
+
+  res.status(200).json({ message: "Invitation updated" });
+};
+
 const createScheduledPresentation = async (req, res) => {
   await PresentationInvitation.findByIdAndUpdate(req.query.invitationId, {
     response: "accepted",
+    scheduled: true,
   });
 
   let scheduledPresentation = new ScheduledPresentation(req.body);
@@ -98,11 +116,21 @@ const createScheduledPresentation = async (req, res) => {
 };
 
 const createCompletedPresentation = async (req, res) => {
+  await ScheduledPresentation.findByIdAndUpdate(req.query.presentationId, {
+    completed: true,
+  });
+
   let completedPresentation = new CompletedPresentation(req.body);
 
   await completedPresentation.save();
 
   res.status(201).json(completedPresentation);
+};
+
+const updateCompletedPresentation = async (req, res) => {
+  await CompletedPresentation.findByIdAndUpdate(req.params.id, req.body);
+
+  res.status(200).json({ message: "Presentation updated" });
 };
 
 // const setPresentationCompleted = async (req, res) => {
@@ -124,4 +152,6 @@ module.exports = {
   getPresentationContacts,
   getPresentationInvitations,
   getScheduledPresentations,
+  updateCompletedPresentation,
+  updatePresentationInvitation,
 };
