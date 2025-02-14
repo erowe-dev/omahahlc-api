@@ -18,7 +18,10 @@ const getUserMenu = async (req, res) => {
   let role = decode(req.headers.authorization).user.role;
   let menuItems = [];
 
-  if (role.toLowerCase().includes("admin") || role === "cooperativeDoctorCoordinator") {
+  if (
+    role.toLowerCase().includes("admin") ||
+    role === "cooperativeDoctorCoordinator"
+  ) {
     menuItems = [
       {
         id: "home",
@@ -26,6 +29,13 @@ const getUserMenu = async (req, res) => {
         type: "basic",
         icon: "mat_outline:house",
         link: "/home",
+      },
+      {
+        id: "presentations",
+        title: "Presentations",
+        type: "basic",
+        icon: "heroicons_outline:academic-cap",
+        link: "presentations",
       },
       {
         id: "cooperative-doctors",

@@ -7,14 +7,19 @@ const cors = require("cors");
 require("dotenv").config();
 
 const authRouter = require("./routes/auth.routes");
+const checklistsRouter = require("./routes/checklists.routes");
+const completedPresentationsRouter = require("./routes/completed-presentations.routes");
 const cooperativeDoctorsRouter = require("./routes/cooperative-doctors.routes");
-const prospectiveDoctorsRouter = require("./routes/prospective-doctors.routes");
 const hospitalsRouter = require("./routes/hospitals.routes");
 const notesRouter = require("./routes/notes.routes");
-const presentationsRouter = require("./routes/presentations.routes");
+const presentationContactsRouter = require("./routes/presentation-contacts.routes");
+const presentationInvitationsRouter = require("./routes/presentation-invitations.routes");
+const prospectiveDoctorsRouter = require("./routes/prospective-doctors.routes");
+const scheduledPresentationsRouter = require("./routes/scheduled-presentations.routes");
 const specialtiesRouter = require("./routes/specialties.routes");
-const usersRouter = require("./routes/users.routes");
+const tasksRouter = require("./routes/tasks.routes");
 const userManagmentRouter = require("./routes/user-management.routes");
+const usersRouter = require("./routes/users.routes");
 
 const port = process.env.PORT || 3001;
 const dbConnectionString = process.env.MongoURI;
@@ -43,6 +48,21 @@ app.use(
 app.use("/auth", authRouter);
 
 app.use(
+  "/scheduled-presentations",
+  passport.authenticate("jwt", { session: false }),
+  scheduledPresentationsRouter
+);
+app.use(
+  "/checklists",
+  passport.authenticate("jwt", { session: false }),
+  checklistsRouter
+);
+app.use(
+  "/completed-presentations",
+  passport.authenticate("jwt", { session: false }),
+  completedPresentationsRouter
+);
+app.use(
   "/cooperative-doctors",
   passport.authenticate("jwt", { session: false }),
   cooperativeDoctorsRouter
@@ -63,14 +83,24 @@ app.use(
   notesRouter
 );
 app.use(
-  "/presentations",
+  "/presentation-contacts",
   passport.authenticate("jwt", { session: false }),
-  presentationsRouter
+  presentationContactsRouter
+);
+app.use(
+  "/presentation-invitations",
+  passport.authenticate("jwt", { session: false }),
+  presentationInvitationsRouter
 );
 app.use(
   "/specialties",
   passport.authenticate("jwt", { session: false }),
   specialtiesRouter
+);
+app.use(
+  "/tasks",
+  passport.authenticate("jwt", { session: false }),
+  tasksRouter
 );
 app.use(
   "/users",
