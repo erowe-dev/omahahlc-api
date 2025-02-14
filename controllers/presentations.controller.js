@@ -43,7 +43,7 @@ const getScheduledPresentations = async (req, res) => {
   }
 
   let scheduledPresentations = await ScheduledPresentation.find(query)
-    .populate("assignedPresenters")
+    .populate("assignedPresenter")
     .populate("contact")
     .populate("presentationChecklist")
     .sort({ scheduledDateTime: 1 });
@@ -115,6 +115,12 @@ const createScheduledPresentation = async (req, res) => {
   res.status(201).json(scheduledPresentation);
 };
 
+const updateScheduledPresentation = async (req, res) => {
+  await ScheduledPresentation.findByIdAndUpdate(req.params.id, req.body);
+
+  res.status(200).json({ message: "Presentation updated" });
+};
+
 const createCompletedPresentation = async (req, res) => {
   await ScheduledPresentation.findByIdAndUpdate(req.query.presentationId, {
     completed: true,
@@ -154,4 +160,5 @@ module.exports = {
   getScheduledPresentations,
   updateCompletedPresentation,
   updatePresentationInvitation,
+  updateScheduledPresentation,
 };

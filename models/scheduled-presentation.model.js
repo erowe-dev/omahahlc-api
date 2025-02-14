@@ -8,12 +8,11 @@ const scheduledPresentationSchema = new mongoose.Schema(
     },
 
     scheduledDateTime: Date,
-    assignedPresenters: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
+    assignedPresenter: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+
     offeredCME: {
       type: Boolean,
       default: false,
