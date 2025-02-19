@@ -115,6 +115,12 @@ const createScheduledPresentation = async (req, res) => {
   res.status(201).json(scheduledPresentation);
 };
 
+const updatePresentationContact = async (req, res) => {
+  await PresentationContact.findByIdAndUpdate(req.params.id, req.body);
+
+  res.status(200).json({ message: "Contact updated" });
+};
+
 const updateScheduledPresentation = async (req, res) => {
   await ScheduledPresentation.findByIdAndUpdate(req.params.id, req.body);
 
@@ -159,6 +165,7 @@ module.exports = {
   getPresentationInvitations,
   getScheduledPresentations,
   updateCompletedPresentation,
+  updatePresentationContact,
   updatePresentationInvitation,
   updateScheduledPresentation,
 };

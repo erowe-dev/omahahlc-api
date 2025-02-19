@@ -8,6 +8,7 @@ const presentationContactSchema = new mongoose.Schema(
     contactTitle: String,
     contactPhone: String,
     contactEmail: String,
+    notes: String,
 
     facility: {
       type: mongoose.Schema.Types.ObjectId,
