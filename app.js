@@ -56,7 +56,7 @@ const authenticatedRoute = (path, router) => {
 authenticatedRoute("/checklists", checklistsRouter);
 authenticatedRoute("/completed-presentations", completedPresentationsRouter);
 authenticatedRoute("/cooperative-doctors", cooperativeDoctorsRouter);
-authenticatedRoute("/files", filesRouter(conn));
+authenticatedRoute("/files", filesRouter);
 authenticatedRoute("/hospitals", hospitalsRouter);
 authenticatedRoute("/notes", notesRouter);
 authenticatedRoute("/presentation-contacts", presentationContactsRouter);

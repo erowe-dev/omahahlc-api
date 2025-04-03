@@ -1,27 +1,35 @@
 const express = require("express");
+const cache = require("../middleware/cache-helper");
+const router = express.Router();
+const {
+  upload,
+  deleteFile,
+  getFileIdsForEntity,
+  streamFileForDisplay,
+} = require("../managers/file-manager");
 
-module.exports = (db) => {
-  if (!db) {
-    throw new Error("Database connection not provided to routes");
+router.get("/:type/:id", (req, res) => {
+  getFileIdsForEntity(req.params, res);
+});
+
+router.get("/:fileId", cache(1800), (req, res) => {
+  streamFileForDisplay(req.params.fileId, res);
+});
+
+router.post("/upload/:type/:id", upload.single("file"), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: "No file uploaded" });
   }
 
-  const router = express.Router();
-  const {
-    upload,
-    getFileIdsForEntity,
-    saveFileToGridFS,
-    streamFileForDisplay,
-  } = require("../managers/file-manager")(db);
-
-  router.get("/:type/:id", (req, res) => {
-    getFileIdsForEntity(req.params, res);
+  res.status(200).json({
+    message: "File uploaded",
+    id: req.file.key,
+    filename: req.file.filename,
   });
+});
 
-  router.get("/:fileId", (req, res) => {
-    streamFileForDisplay(req.params.fileId, res);
-  });
+router.delete("/:id", (req, res) => {
+  deleteFile(req.params.id, res);
+});
 
-  router.post("/upload/:type/:id", upload.single("file"), saveFileToGridFS);
-
-  return router;
-};
+module.exports = router;
