@@ -103,6 +103,13 @@ const getUserMenu = async (req, res) => {
         link: "/home",
       },
       {
+        id: "presentations",
+        title: "Presentations",
+        type: "basic",
+        icon: "heroicons_outline:academic-cap",
+        link: "presentations",
+      },
+      {
         id: "cooperative-doctors",
         title: "Cooperative Doctors",
         type: "basic",

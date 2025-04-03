@@ -4,7 +4,7 @@ const ProspectiveDoctor = require("../models/prospective-doctor.model");
 const Specialty = require("../models/specialty.model");
 
 const getSpecialties = async (req, res) => {
-  let specialties = await Specialty.find();
+  let specialties = await Specialty.find().sort({ name: 1 });
   if (specialties) {
     res.status(200).json(specialties);
   } else {

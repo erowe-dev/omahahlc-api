@@ -73,7 +73,6 @@ const getFileIdsForEntity = async (params, res) => {
 
 const streamFileForDisplay = async (fileId, res) => {
   try {
-    console.log(fileId)
     const fileStream = await s3.getObject({
       Bucket: bucketName,
       Key: fileId,

@@ -11,11 +11,6 @@ const presentationInvitationSchema = new mongoose.Schema(
       ref: "User",
     },
     dateContacted: Date,
-    departments: [
-      {
-        type: String,
-      },
-    ],
 
     followUpDate: {
       type: Date,
