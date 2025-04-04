@@ -15,7 +15,7 @@ const getSpecialties = async (req, res) => {
 const getSpecialtiesNeeded = async (req, res) => {
   let specialties = await Specialty.find()
     .sort({ numberOfCooperativeDoctors: 1 })
-    .limit(5);
+    .limit(8);
 
   //uncomment to update the count
   // for (let i = 0; i < specialties.length; i++) {
@@ -26,7 +26,7 @@ const getSpecialtiesNeeded = async (req, res) => {
   //   specialty.save();
   // }
 
-  //await updateDoctorSpecialties(specialties);
+  // await updateDoctorSpecialties(specialties);
 
   res.status(200).json(specialties);
 };
