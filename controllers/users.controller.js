@@ -9,7 +9,7 @@ const getUser = async (req, res) => {
 };
 
 const getUsers = async (req, res) => {
-  let users = await User.find({}, "-password");
+  let users = await User.find({}, "-password").sort({ name: 1 });
 
   res.status(200).json(users);
 };

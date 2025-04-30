@@ -11,7 +11,11 @@ const getUserTasks = async (req, res) => {
   }).populate("contact");
 
   let scheduledPresentations = await ScheduledPresentation.find({
-    assignedPresenters: { $in: [body.user._id] },
+    assignedPresenter: body.user._id,
+  }).populate("contact");
+
+  let completedPresentations = await CompletedPresentation.find({
+    presenters: { $in: [body.user._id] },
   }).populate("contact");
 
   let tasks = new Array();
@@ -20,7 +24,7 @@ const getUserTasks = async (req, res) => {
       type: "followUp",
       id: invitation._id,
       date: invitation.followUpDate,
-      title: `Follow up with ${invitation.contact.contactName} `,
+      title: `Invitation follow up with ${invitation.contact.contactName} `,
       allDay: true,
       url: `/presentations/details/${invitation.contact.id}`,
     });
@@ -33,6 +37,17 @@ const getUserTasks = async (req, res) => {
       date: presentation.scheduledDateTime,
       title: `Presentation with ${presentation.contact.contactName}`,
       allDay: false,
+      url: `/presentations/details/${presentation.contact.id}`,
+    });
+  });
+
+  completedPresentations.forEach((presentation) => {
+    tasks.push({
+      type: "followUp",
+      id: presentation._id,
+      date: presentation.followUpDate,
+      title: `Post presentation follow up with ${presentation.contact.contactName}`,
+      allDay: true,
       url: `/presentations/details/${presentation.contact.id}`,
     });
   });

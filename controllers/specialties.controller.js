@@ -13,7 +13,9 @@ const getSpecialties = async (req, res) => {
 };
 
 const getSpecialtiesNeeded = async (req, res) => {
-  let specialties = await Specialty.find()
+  let specialties = await Specialty.find({
+    includeInStatistics: true,
+  })
     .sort({ numberOfCooperativeDoctors: 1 })
     .limit(8);
 

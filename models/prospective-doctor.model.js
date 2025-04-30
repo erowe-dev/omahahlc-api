@@ -12,6 +12,15 @@ const prospectiveDoctorSchema = new mongoose.Schema(
     primaryEmail: String,
     primaryFacilityId: String,
 
+    otherFacilities: {
+      type: [
+        {
+          id: String,
+          name: String,
+        },
+      ],
+    },
+
     createdBy: String,
     updatedBy: String,
   },

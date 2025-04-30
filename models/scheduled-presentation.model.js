@@ -8,6 +8,7 @@ const scheduledPresentationSchema = new mongoose.Schema(
     },
 
     scheduledDateTime: Date,
+
     assignedPresenter: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

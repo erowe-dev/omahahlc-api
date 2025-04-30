@@ -1,11 +1,12 @@
+require("dotenv").config();
+
 const cors = require("cors");
 const cron = require("node-cron");
 const express = require("express");
+const mailManager = require("./managers/mail-manager");
 const mongoose = require("mongoose");
 
 const passport = require("passport");
-
-require("dotenv").config();
 
 const authRouter = require("./routes/auth.routes");
 const checklistsRouter = require("./routes/checklists.routes");
@@ -26,8 +27,6 @@ const usersRouter = require("./routes/users.routes");
 const port = process.env.PORT || 3001;
 const dbConnectionString = process.env.MongoURI;
 
-const conn = mongoose.createConnection(dbConnectionString);
-
 mongoose.connect(dbConnectionString);
 
 const db = mongoose.connection;
@@ -38,6 +37,18 @@ db.once("open", () => {
 
 require("./auth/auth");
 const app = express();
+
+cron.schedule("0 7 * * *", () => {
+  console.log("Running a task every day at 7am");
+  mailManager
+    .loadNotifications()
+    .then(() => {
+      console.log("Notifications sent successfully");
+    })
+    .catch((error) => {
+      console.error("Error sending notifications:", error);
+    });
+});
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
