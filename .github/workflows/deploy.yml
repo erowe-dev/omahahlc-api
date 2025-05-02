@@ -1,0 +1,41 @@
+name: Deploy to Lightsail
+
+on:
+  push:
+    branches:
+      - master
+    # or, for PR merge to master:
+    # pull_request:
+    #   types:
+    #     - closed
+    #     - merged
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.19.0'
+          cache: 'yarn'
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.LIGHTSAIL_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.LIGHTSAIL_IP }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to Lightsail
+        run: |
+          ssh -i ~/.ssh/id_rsa ${{ secrets.LIGHTSAIL_USER }}@${{ secrets.LIGHTSAIL_IP }} << 'EOF'
+            cd /opt/bitnami/projects/omaha-hlc-api  # Adjust path to your app
+            git pull origin main
+            yarn install
+            pm2 restart omaha-hlc-api
+          EOF
