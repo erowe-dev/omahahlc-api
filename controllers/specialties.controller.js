@@ -4,7 +4,7 @@ const ProspectiveDoctor = require("../models/prospective-doctor.model");
 const Specialty = require("../models/specialty.model");
 
 const getSpecialties = async (req, res) => {
-  let specialties = await Specialty.find();
+  let specialties = await Specialty.find().sort({ name: 1 });
   if (specialties) {
     res.status(200).json(specialties);
   } else {
@@ -13,9 +13,11 @@ const getSpecialties = async (req, res) => {
 };
 
 const getSpecialtiesNeeded = async (req, res) => {
-  let specialties = await Specialty.find()
+  let specialties = await Specialty.find({
+    includeInStatistics: true,
+  })
     .sort({ numberOfCooperativeDoctors: 1 })
-    .limit(5);
+    .limit(8);
 
   //uncomment to update the count
   // for (let i = 0; i < specialties.length; i++) {
@@ -26,7 +28,7 @@ const getSpecialtiesNeeded = async (req, res) => {
   //   specialty.save();
   // }
 
-  //await updateDoctorSpecialties(specialties);
+  // await updateDoctorSpecialties(specialties);
 
   res.status(200).json(specialties);
 };

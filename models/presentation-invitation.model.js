@@ -5,17 +5,13 @@ const presentationInvitationSchema = new mongoose.Schema(
   {
     contactId: {
       type: mongoose.Schema.Types.ObjectId,
+      ref: "PresentationContact",
     },
     contactedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
     dateContacted: Date,
-    departments: [
-      {
-        type: String,
-      },
-    ],
 
     followUpDate: {
       type: Date,
@@ -59,6 +55,13 @@ presentationInvitationSchema.virtual("id").get(function () {
 presentationInvitationSchema.virtual("contact", {
   ref: "PresentationContact",
   localField: "contactId",
+  foreignField: "_id",
+  justOne: true,
+});
+
+presentationInvitationSchema.virtual("contactedByUser", {
+  ref: "User",
+  localField: "contactedBy",
   foreignField: "_id",
   justOne: true,
 });

@@ -1,5 +1,6 @@
 const decode = require("jwt-decode");
 const Note = require("../models/note.model");
+const PresentationInvitation = require("../models/presentation-invitation.model");
 
 const getNotes = async (req, res) => {
   let entityId = req.query.id;
@@ -24,12 +25,26 @@ const getInteractionStatistics = async (req, res) => {
     noteType: { $ne: "note" },
   });
 
+  let presentationInvitations = await PresentationInvitation.find({});
+
   let contactMethods = {
     phone: 0,
     email: 0,
     text: 0,
     inPerson: 0,
   };
+
+  presentationInvitations.forEach((note) => {
+    if (note.methodOfContact === "phone") {
+      contactMethods.phone++;
+    } else if (note.methodOfContact === "email") {
+      contactMethods.email++;
+    } else if (note.methodOfContact === "text") {
+      contactMethods.text++;
+    } else if (note.methodOfContact === "in-person") {
+      contactMethods.inPerson++;
+    }
+  });
 
   prospectiveNotes.forEach((note) => {
     if (note.contactMethod === "phone") {

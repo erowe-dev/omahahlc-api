@@ -9,7 +9,21 @@ passport.use(
   new JWTstrategy(
     {
       secretOrKey: process.env.API_SECRET,
-      jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: (req) => {
+        // Check for token in Authorization header
+        const authHeaderToken = ExtractJWT.fromAuthHeaderAsBearerToken()(req);
+        if (authHeaderToken) {
+          return authHeaderToken;
+        }
+
+        // Check for token in URL query parameter
+
+        if (req && req.query && req.query.token) {
+          return req.query.token;
+        }
+
+        return null;
+      },
     },
     async (token, done) => {
       try {

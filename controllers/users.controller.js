@@ -9,7 +9,7 @@ const getUser = async (req, res) => {
 };
 
 const getUsers = async (req, res) => {
-  let users = await User.find({}, "-password");
+  let users = await User.find({}, "-password").sort({ name: 1 });
 
   res.status(200).json(users);
 };
@@ -101,6 +101,13 @@ const getUserMenu = async (req, res) => {
         type: "basic",
         icon: "mat_outline:house",
         link: "/home",
+      },
+      {
+        id: "presentations",
+        title: "Presentations",
+        type: "basic",
+        icon: "heroicons_outline:academic-cap",
+        link: "presentations",
       },
       {
         id: "cooperative-doctors",

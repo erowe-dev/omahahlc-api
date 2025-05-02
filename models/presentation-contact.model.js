@@ -10,6 +10,12 @@ const presentationContactSchema = new mongoose.Schema(
     contactEmail: String,
     notes: String,
 
+    departments: [
+      {
+        type: String,
+      },
+    ],
+
     facility: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Hospital",

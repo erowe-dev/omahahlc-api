@@ -3,7 +3,7 @@ const cache = require("../middleware/cache-helper");
 const cooperativeDoctorsController = require("../controllers/cooperative-doctors.controller");
 const router = express.Router();
 
-router.get("/", cache(10), cooperativeDoctorsController.getCooperativeDoctors);
+router.get("/", cache(30), cooperativeDoctorsController.getCooperativeDoctors);
 router.get("/new", cooperativeDoctorsController.getNewCooperativeDoctors);
 router.get("/:id", cooperativeDoctorsController.getCooperativeDoctor);
 router.post("/", cooperativeDoctorsController.createCooperativeDoctor);
