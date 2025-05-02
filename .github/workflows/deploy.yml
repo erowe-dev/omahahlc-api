@@ -3,7 +3,7 @@ name: Deploy to Lightsail
 on:
   push:
     branches:
-      - master
+      - main
     # or, for PR merge to master:
     # pull_request:
     #   types:
