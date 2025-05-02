@@ -54,7 +54,22 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // Set up CORS
-app.use(cors({ origin: "*" }));
+const allowedOrigins = (() => {
+  switch (process.env.NODE_ENV) {
+    case "production":
+      return "https://omahahlchelper.com";
+    case "test":
+      return "https://omahahlc-test.onrender.com";
+    default:
+      return "http://localhost:4040";
+  }
+})();
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+  })
+);
 
 // Auth route doesn't need authentication
 app.use("/auth", authRouter);
