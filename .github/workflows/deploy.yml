@@ -29,19 +29,14 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.LIGHTSAIL_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          # Add GitHub to known_hosts to avoid SSH authenticity prompt
-          ssh-keyscan -H github.com >> ~/.ssh/known_hosts
-          # Add Lightsail server to known_hosts
           ssh-keyscan -H ${{ secrets.LIGHTSAIL_IP }} >> ~/.ssh/known_hosts
-          eval "$(ssh-agent -s)"
-          ssh-add ~/.ssh/id_rsa
+          ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 
-
-      - name: Deploy to Lightsail
+      - name: Deploy via SSH
         run: |
-          ssh -i ~/.ssh/id_rsa ${{ secrets.LIGHTSAIL_USER }}@${{ secrets.LIGHTSAIL_IP }} << 'EOF'
-            cd /opt/bitnami/projects/omaha-hlc-api  # Adjust path to your app
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.LIGHTSAIL_USER }}@${{ secrets.LIGHTSAIL_IP }} << 'EOF'
+            cd /opt/bitnami/projects/omaha-hlc-api  # update this path to your app
             git pull origin main
-            yarn install
+            yarn install --frozen-lockfile
             pm2 restart omaha-hlc-api
           EOF
