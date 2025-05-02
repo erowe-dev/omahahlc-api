@@ -29,7 +29,13 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.LIGHTSAIL_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+          # Add GitHub to known_hosts to avoid SSH authenticity prompt
+          ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+          # Add Lightsail server to known_hosts
           ssh-keyscan -H ${{ secrets.LIGHTSAIL_IP }} >> ~/.ssh/known_hosts
+          eval "$(ssh-agent -s)"
+          ssh-add ~/.ssh/id_rsa
+
 
       - name: Deploy to Lightsail
         run: |
