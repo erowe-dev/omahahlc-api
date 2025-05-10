@@ -66,7 +66,9 @@ passport.use(
     async (email, password, done) => {
       try {
         email = email.toLowerCase();
-        const user = await UserModel.findOne({ email }).select("+password");
+        const user = await UserModel.findOne({
+          email: { $regex: new RegExp(email, "i") },
+        }).select("+password");
 
         if (!user) {
           return done(null, false, { message: "User not found" });
