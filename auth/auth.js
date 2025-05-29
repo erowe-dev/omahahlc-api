@@ -17,7 +17,6 @@ passport.use(
         }
 
         // Check for token in URL query parameter
-
         if (req && req.query && req.query.token) {
           return req.query.token;
         }
@@ -29,27 +28,6 @@ passport.use(
       try {
         return done(null, token.user);
       } catch (error) {
-        done(error);
-      }
-    }
-  )
-);
-
-passport.use(
-  "signup",
-  new localStrategy(
-    {
-      usernameField: "email",
-      passwordField: "password",
-    },
-    async (email, password, done) => {
-      try {
-        email = email.toLowerCase();
-        const user = await UserModel.create({ email, password });
-
-        return done(null, user);
-      } catch (error) {
-        console.log(error);
         done(error);
       }
     }

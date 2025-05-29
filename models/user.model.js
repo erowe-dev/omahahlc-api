@@ -14,12 +14,24 @@ const userSchema = new Schema(
       type: String,
       select: false,
     },
+    passwordResetToken: {
+      type: String,
+      select: false,
+    },
+    
     name: {
       type: String,
     },
     role: {
       type: String,
-      enum: ["admin", "helperAdmin", "cooperativeDoctorCoordinator", "member", "helper", "pvg"],
+      enum: [
+        "admin",
+        "helperAdmin",
+        "cooperativeDoctorCoordinator",
+        "member",
+        "helper",
+        "pvg",
+      ],
       default: "member",
     },
     phone: {
