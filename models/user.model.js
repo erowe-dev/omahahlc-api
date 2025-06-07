@@ -18,7 +18,7 @@ const userSchema = new Schema(
       type: String,
       select: false,
     },
-    
+
     name: {
       type: String,
     },
@@ -26,8 +26,8 @@ const userSchema = new Schema(
       type: String,
       enum: [
         "admin",
-        "helperAdmin",
-        "cooperativeDoctorCoordinator",
+        "helper-admin",
+        "cooperative-doctor-coordinator",
         "member",
         "helper",
         "pvg",
