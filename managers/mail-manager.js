@@ -3,6 +3,8 @@ const users = require("../models/user.model");
 const presentationInvitations = require("../models/presentation-invitation.model");
 const completedPresentations = require("../models/completed-presentation.model");
 const scheduledPresentations = require("../models/scheduled-presentation.model");
+const fs = require("fs").promises;
+const path = require("path");
 
 // Create a transporter object
 const transporter = nodemailer.createTransport({
@@ -117,6 +119,34 @@ async function loadNotifications() {
   }
 }
 
+async function sendPasswordResetEmail(to, token) {
+  let htmlTemplate;
+  try {
+    const templatePath = path.join(__dirname, "/resetPassword.html");
+    htmlTemplate = await fs.readFile(templatePath, "utf8");
+  } catch (err) {
+    console.error("Could not load resetPassword.html template:", err);
+    htmlTemplate = null;
+  }
+
+  try {
+    const resetLink = `https://omahahlchelper.com/reset-password?token=${token}`;
+    const mailOptions = {
+      from: "HLC Helper <notifications@omahahlchelper.com>",
+      to: to,
+      subject: "Password Reset Request",
+      html: htmlTemplate.replace("${resetLink}", resetLink),
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Email sent: %s", info.messageId);
+    return info;
+  } catch (error) {
+    console.error("Error sending email:", error);
+    return null;
+  }
+}
+
 async function sendNotificationEmail(to, subject, text) {
   try {
     const mailOptions = {
@@ -135,5 +165,6 @@ async function sendNotificationEmail(to, subject, text) {
 
 module.exports = {
   loadNotifications,
+  sendPasswordResetEmail,
   sendNotificationEmail,
 };
