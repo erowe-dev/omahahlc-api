@@ -9,5 +9,6 @@ router.put("/role-permissions", userManagementController.updateRolePermissions);
 router.post("/", userManagementController.createUser);
 router.put("/:id", userManagementController.updateUser);
 router.put("/:id/reset-password", userManagementController.resetPassword);
+router.delete("/:id", userManagementController.deleteUser);
 
 module.exports = router;
