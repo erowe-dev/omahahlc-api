@@ -1,6 +1,7 @@
 const Users = require("../models/user.model");
 const Permissions = require("../models/permission.model");
 const Roles = require("../models/role.model");
+const Hospitals = require("../models/hospital.model");
 
 const createUser = async (req, res) => {
   await Users.create(req.body)
@@ -10,6 +11,39 @@ const createUser = async (req, res) => {
     .catch((err) => {
       res.status(500).json(err);
     });
+};
+
+const deleteUser = async (req, res) => {
+  const userId = req.params.id;
+
+  try {
+    // Prefer findByIdAndDelete so you can check whether a document existed
+    const deleted = await Users.findByIdAndDelete(userId);
+
+    if (!deleted) {
+      return res.sendStatus(404);
+    }
+
+    // Remove user from any hospital assignedHlcMembers or assignedPvgMembers arrays
+    await Hospitals.updateMany(
+      {
+        $or: [
+          { assignedHlcMembers: userId },
+          { assignedPvgMembers: userId },
+        ],
+      },
+      {
+        $pull: {
+          assignedHlcMembers: userId,
+          assignedPvgMembers: userId,
+        },
+      }
+    );
+
+    return res.sendStatus(204); // No Content (deleted)
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
 };
 
 const getPermissions = async (req, res) => {
@@ -92,6 +126,7 @@ const resetPassword = async (req, res) => {
 
 module.exports = {
   createUser,
+  deleteUser,
   getPermissions,
   getRoles,
   resetPassword,
